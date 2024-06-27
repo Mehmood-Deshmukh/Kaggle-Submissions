@@ -54,7 +54,7 @@ param_grid = {
     'colsample_bytree': [0.8, 1.0]
 }
 
-regressor = XGBRegressor(n_jobs=4, random_state=42)
+regressor = XGBRegressor(n_jobs=4, random_state=1)
 
 from sklearn.model_selection import RandomizedSearchCV
 
