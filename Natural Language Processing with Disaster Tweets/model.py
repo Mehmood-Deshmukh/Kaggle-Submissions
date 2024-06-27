@@ -8,10 +8,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report
+from nltk.stem.porter import PorterStemmer
 
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 stop_words.remove('not')
+ps = PorterStemmer()
 
 dataset = pd.read_csv('train.csv')
 
@@ -22,10 +24,11 @@ def clean_text(text):
     text = re.sub(r'<.*?>+', '', text)
     text = re.sub(r'[%s]' % re.escape(string.punctuation), '', text)
     text = re.sub(r'\w*\d\w*', '', text)
-    text = ' '.join(word for word in text.split() if word not in stop_words)
+    text = ' '.join(ps.stem(word) for word in text.split() if word not in stop_words)
     return text
 
 dataset['cleaned_text'] = dataset['text'].apply(clean_text)
+
 dataset['keyword'].fillna('', inplace=True)
 dataset['location'].fillna('', inplace=True)
 
